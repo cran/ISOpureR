@@ -1,0 +1,30 @@
+Package: ISOpureR
+Version: 1.0.4
+Date: 2013-08-25
+Title: Deconvolution of Tumour Profiles
+Authors@R: c(person("Gerald Quon", role = "aut",
+		     	email = "gquon@mit.edu"),
+		person("Catalina V Anghel", role = c("aut", "trl"),
+			email="Catalina Anghel@oicr.on.ca"),
+		person("Syed Haider", role = "aut",
+			email="Syed.Haider@oicr.on.ca"),	
+		person("Francis Nguyen", role = "aut"),
+		person("Amit G Deshwar", role = "aut"),
+		person("Quaid D Morris", role = "aut",
+		     	email = "Quaid.Morris@utoronto.ca"),
+		person("Paul C Boutros", role = c("aut", "cre"),
+		     	email = "Paul.Boutros@oicr.on.ca"))
+Author: Gerald Quon [aut], Catalina V Anghel [aut, trl], Syed Haider [aut], Francis Nguyen [aut], Amit G Deshwar [aut], Quaid D 
+	Morris [aut], Paul C Boutros [aut, cre]
+Maintainer: Paul C Boutros <Paul.Boutros@oicr.on.ca>
+Depends: R (>= 3.1.1)
+Suggests: knitr
+VignetteBuilder: knitr
+Description: Deconvolution of mixed tumour profiles into normal and cancer for each patient, using 
+	the ISOpure algorithm in Quon et al. Genome Medicine, 2013 5:29. Deconvolution requires 
+	mixed tumour profiles and a set of unmatched "basis" normal profiles.
+License: GPL-2
+Packaged: 2014-11-16 18:20:24 UTC; canghel
+NeedsCompilation: no
+Repository: CRAN
+Date/Publication: 2014-11-16 22:15:14

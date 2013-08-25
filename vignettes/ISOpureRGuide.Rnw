@@ -1,0 +1,234 @@
+%\VignetteEngine{knitr::knitr_notangle}
+%\VignetteIndexEntry{Guide for using ISOpureR}
+
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+{hyperref}
+\hypersetup{
+pdfstartview={XYZ null null 1}}
+\begin{document}
+<<setup, include=FALSE, cache=FALSE>>=
+library(knitr)
+# set global chunk options
+opts_chunk$set(fig.path='figure/minimal-', fig.align='center', fig.show='hold')
+options(formatR.arrow=TRUE,width=90)
+@
+\title{A guide to using \emph{ISOpureR}}
+\author{Catalina V Anghel}
+\maketitle
+
+\section{Background}
+ISOpure is a statistical model for deconvolution of mRNA microarray profiles of mixed tumour samples into the constituent normal and cancer profiles, as well as estimating the proportion of cancer content.  The model was developed by Quon et al. in \cite{Quon-ISOpure} and first implemented in MATLAB. The R package \emph{ISOpureR} keeps as close to the MATLAB implementation as possible. We will use `ISOpure' to refer to the algorithm in general and \emph{ISOpureR} to refer to the R package. 
+
+The full description of the model details (inputs, outputs, computation) is in \cite{Quon-ISOpure}. A summary of the changes made for the R implementation is given in \cite{Anghel-ISOpureR}. In particular, \emph{ISOpureR} is not yet tested to be back-compatible with ISOLATE \cite{Quon-ISOLATE}, the precursor to ISOpure. 
+
+Briefly, the inputs are as follows:
+
+\begin{itemize}
+\item A matrix where the columns $\mathbf{t}_1, \mathbf{t}_2, \ldots, \mathbf{t}_N$ represent the tumour microarray profiles of $N$ patients, where the preprocessing of the data is described in  \cite{Quon-ISOpure}. In particular, the intensities should \emph{not} be log-transformed.  The size of the matrix is $G \times N$ where $G$ is number of transcripts/features and $N$ is the number of patients. 
+\item  A matrix where the columns $\mathbf{b}_1, \mathbf{b}_2, \ldots, \mathbf{b}_K$ represent the microarray profiles from $K$ normal (\emph{i.e.} healthy tissue) samples.  The size of the matrix will be $G \times K$, where $K$ is expected to be less than $N$.
+\end{itemize}
+
+The ISOpure algorithm runs in two steps.  The outputs of \emph{ISOpureR} at each step are lists that we have called \texttt{ISOpureS1model} and \texttt{ISOpureS2model}, respectively.  They contain all the intermediate and hyper-parameters estimated by the models as well as the desired outputs.  The most important entries are the following. 
+
+\begin{itemize}
+\item The tumour `purity' estimates, \texttt{ISOpureS1model\$alphapurities} and \texttt{ISOpureS2model\$alphapurities}. (The $\alpha$'s are estimated in Step 1; the values of \texttt{alphapurities} from Step 1 are transferred to the model in Step 2, so that \texttt{ISOpureS1model\$alphapurities} and \texttt{ISOpureS2model\$alphapurities} will be identical.) These are numerical vectors containing $N$ entries, $\alpha_1, \alpha_2, \ldots, \alpha_N$, of the estimated proportion of RNA in the tumour sample that was contributed by the cancer cells, for each patient. 
+\item  A matrix \texttt{ISOpureS2model\$cc\_cancerprofiles} where the columns $\mathbf{c}_1, \mathbf{c}_2, \ldots, \mathbf{c}_N$ represent the purified cancer profiles corresponding to each mixed tumour profile.  The size of the matrix will be $G \times N$, as for the tumour profiles.
+\end{itemize}
+
+The idea is that a patient's particular tumour sample, $\mathbf{t}_n$ is estimated as a combination of a cancer profile, $\mathbf{c}_n$ and a normal healthy profile $\mathbf{h}_n$
+\[
+\mathbf{t}_n = \alpha_n \mathbf{c}_n + (1- \alpha_n)\mathbf{h}_n.
+\]
+Since patients do not necessarily have a matched tumour-normal sample, and the normal sample itself may have a different composition from the healthy component inside the tumour sample, $\mathbf{h}_n$ is estimated from the reference normal samples $\mathbf{b}_i$'s.
+
+\section{Applying ISOpureR to an example}
+
+We will show how to use \emph{ISOpureR} with a small part of the lung adenocarcinoma expression data from Beer et al. \cite{Beer}, which is included with the package. Although the full dataset contains measured expression levels of 5151 transcripts in 86 patients, only data from 2500 transcripts and 43 patients is included with \emph{ISOpureR} to reduce the file size. The dataset also contains 10 reference healthy samples. 
+
+\subsection{Load and format data}
+
+The first step is to load the data and make sure that both the tumour data and the normal data are in matrix form, with the required dimensions.  
+
+<<load-data>>=
+# Load the library and the data included with the package
+# Data is not the full Beer dataset due to memory constraints
+library(ISOpureR);
+path.to.data <- paste0(file.path(system.file(package = "ISOpureR"), 'extdata', 'Beer'));  
+load(file.path(path.to.data , 'beer.normaldata.2500.transcripts.RData'))
+load(file.path(path.to.data , 'beer.tumordata.2500.transcripts.43.patients.RData'))
+
+# Check what the data looks like
+# The tumordata is rather large, so just look at the normal data for this example
+str(beer.normaldata) 
+
+# Make sure that everything is in matrix form
+beer.normaldata <- as.matrix(beer.normaldata);
+beer.tumordata <- as.matrix(beer.tumordata);
+
+# Check what the data looks like
+str(beer.normaldata)
+str(beer.tumordata)
+@
+
+\subsection{Run ISOpure Step 1}
+
+The ISOpure model runs in two steps.  To perform the first step of ISOpure, which will estimate the proportion of cancer cells, $\alpha_n$, for each patient, type the following:
+
+<<run-step-1, eval=FALSE>>=
+# For reproducible results, set the random seed
+set.seed(123);
+# Run ISOpureR Step 1 
+ISOpureS1model <- ISOpureS1.model_core.learnmodel(beer.tumordata, beer.normaldata);
+@ 
+
+The first step runs a long time (\emph{i.e.} about an hour; for the full Beer dataset it takes a few hours).  The output to the screen will look something like this:
+
+<<output-step-1, eval=FALSE>>=
+# [1] "---------------------"
+# [1] "Initializing..."
+# [1] "MIN_KAPPA set to  24446.9895636363"
+# [1] "--- optimizing mm..."
+# [1] "--- optimizing theta..."
+# [1] "--- optimizing vv..."
+# [1] "--- optimizing kappa..."
+# [1] "--- optimizing omega..."
+# [1] "Total log likelihood: -868015829.449002"
+# [1] "iter:  1 / 35 , loglikelihood:  -868015829.449002 , change:  Inf"
+# [1] "--- optimizing mm..."
+# [1] "--- optimizing theta..."
+# [1] "--- optimizing vv..."
+# [1] "--- optimizing kappa..."
+# [1] "--- optimizing omega..."
+# [1] "Total log likelihood: -867925503.209553"
+# [1] "iter:  2 / 35 , loglikelihood:  -867925503.209553 , change:  0.000104071419856478"
+# [1] "--- optimizing mm..."
+# [1] "--- optimizing theta..."
+# [1] "--- optimizing vv..."
+# [1] "--- optimizing kappa..."
+# [1] "--- optimizing omega..."
+# [1] "Total log likelihood: -867906153.934941"
+# [1] "iter:  3 / 35 , loglikelihood:  -867906153.934941 , change:  2.22942014227049e-05"
+@
+
+The optimization of the loglikelihood will run for at least 35 iterations, and if the change in loglikelihood is greater than $10^{-7}$, up to 100 iterations.  At the end of this process  you may see warnings as below.
+
+<<warnings-step-1, eval=FALSE>>=
+warnings()
+# Warning messages:
+# 1: In sqrt(B * B - A * d1 * (x2 - x1)) : NaNs produced
+# 2: In sqrt(B * B - A * d1 * (x2 - x1)) : NaNs produced
+# 3: In sqrt(B * B - A * d1 * (x2 - x1)) : NaNs produced
+@
+
+These are nothing to worry about.  They are part of the optimization calculations, and when a \texttt{NaN} is produced, the algorithm detects that it has not converged and simply adjusts the step size. 
+
+The list \texttt{ISOpureS1model} which is returned will contain all the information on parameters estimated from the first step.   If you would like to see what the list looks like without performing all the calculations, you can load the saved result of Step 1 from the data folder.  The most important list entry is vector of estimated fractions of cancer content, the \texttt{alphapurities}.  
+
+<<ISOpureS1model-structure>>=
+# Load the saved ISOpureS1model for this example, if time is an issue
+load(file.path(path.to.data , 'beer.ISOpureS1model.2500.transcripts.43.patients.RData'))
+ls()
+
+# Check that what ISOpureS1model looks like
+str(ISOpureS1model)
+
+# Look at the alphapurities vector in particular
+ISOpureS1model$alphapurities
+@
+
+\subsection{Run ISOpure Step 2}
+
+Once Step 1 is complete, to perform the second step of ISOpure, which will estimate the patient-specific cancer mRNA expression profiles, call the following function:
+
+<<run-step-2, eval=FALSE>>=
+# For reproducible results, set the random seed
+set.seed(456);
+
+# Run ISOpureR Step 2
+ISOpureS2model <- ISOpureS2.model_core.learnmodel(
+					beer.tumordata, 
+					beer.normaldata, 
+					ISOpureS1model
+					);
+@ 
+
+The screen output will look very similar to the output in Step 1. 
+
+<<output-step-2, eval=FALSE>>=
+# [1] "---------------------"
+# [1] "Initializing..."
+# [1] "MIN_KAPPA set to  2106511.36827368"
+# [1] "--- optimizing cc..."
+# [1] "--- optimizing theta..."
+# [1] "--- optimizing vv..."
+# [1] "--- optimizing kappa..."
+# [1] "Total log likelihood: -866065642.895818"
+# [1] "iter:  1 / 35 , loglikelihood:  -866065642.895818 , change:  Inf"
+# [1] "--- optimizing cc..."
+# [1] "--- optimizing theta..."
+# [1] "--- optimizing vv..."
+# [1] "--- optimizing kappa..."
+# [1] "Total log likelihood: -864323005.847771"
+# [1] "iter:  2 / 35 , loglikelihood:  -864323005.847771 , change:  0.00201618727750749"
+@ 
+
+Again, \texttt{ISOpureS2model} which is returned by the function \texttt{ISOpureS2.model\_core.learnmodel} will contain all the information on parameters estimated in Step 2.  The matrix \texttt{ISOpureS2model\$cc\_cancerprofiles} will contain the patient-specific cancer profiles and is of the same dimension as the \texttt{tumordata}.  It is also of the same scale, (\emph{i.e.} although ISOpureS2 treats purified cancer profiles as parameters of a multinomial distribution, we re-scale them to be on the same scale as the input tumour profiles).  The $n$-th column corresponds to the profile for the $n$-th patient.
+
+<<ISOpureS2model-structure>>=
+# Load the saved ISOpureS2model for this example, if time is an issue
+# Note that the entries in the model have been rounded to 5 significant digits
+# (due to memory constraints)
+load(file.path(
+		path.to.data,
+		'beer.ISOpureS2model.2500.transcripts.43.patients.rounded.RData'
+		)
+	)
+
+# Check that what ISOpureS2model looks like
+str(ISOpureS2model)
+
+# Check what the cancer profiles look like
+str(ISOpureS2model$cc_cancerprofiles)  
+
+# Look at the first entries in the cancer profile for a particular patient, 
+# say patient 3
+head(ISOpureS2model$cc_cancerprofiles[ ,3])
+@
+
+\subsection*{Generating gene signatures}
+
+Purified cancer profiles have been shown to generate better prognostic  gene signatures compared to mixed tumour profiles \cite{Quon-ISOpure}. The purified cancer profiles $\mathbf{c}_n$ (rather than the mixed tumour profiles $\mathbf{t}_n$) were used to train a Cox proportional hazards (CPH) model to predict survival data for each patient.  To test, another dataset of samples were purified using ISOpure and then used to compute the risk for each patient, using the CPH model parameters learned on the training set. 
+
+\begin{thebibliography}{1}
+
+\bibitem{Quon-ISOpure}
+Quon, G., Haider, S., Deshwar, A.G., Cui, A., Boutros, P.C., Morris, Q. Computational pu-
+rification of individual tumor gene expression profiles leads to significant improvements in prognostic prediction. Genome Medicine, 5:29 (2013).
+\url{http://www.ncbi.nlm.nih.gov/pubmed/23537167}.
+
+\bibitem{Quon-ISOLATE}
+Quon, G., Morris, Q. ISOLATE: a computational strategy for identifying the primary origin of
+cancers using high-throughput sequencing. Bioinformatics, 25:2882-2889 (2009)
+\url{http://www.ncbi.nlm.nih.gov/pubmed/19542156}
+
+\bibitem{Anghel-ISOpureR}
+(submitted) Anghel C.V., Quon, G.  Haider S., Nguyen F., Deshwar A.G., 
+Morris Q.D., Boutros P.C. ISOpureR: an R implementation of a
+computational purification algorithm of mixed tumour profiles.  BMC Bioinformatics. (2014)
+
+\bibitem{Beer}
+Beer, D.G., Kardia, S.L., Huang, C.C., Giordano, T.J., Levin, A.M., Misek, D.E., Lin, L., Chen, G., Gharib, T.G., Thomas, D.G., Lizyness, M.L., Kuick, R., Hayasaka, S., Taylor, J.M., Iannettoni, M.D., Orringer, M.B., Hanash, S. Gene-expression profiles predict survival of patients with lung adenocarcinoma. Nat. Med. 8(8), 816-824 (2002)
+\url{http://www.ncbi.nlm.nih.gov/pubmed/12118244}
+
+\end{thebibliography}
+\end{document}
