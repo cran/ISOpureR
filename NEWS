@@ -1,0 +1,53 @@
+ISOpureR 1.0.8 2015-01-07
+==========================
+
+Minor update
+-------------
+- removed RcppEigen from the Imports field in the DESCRIPTION file, and added to LinkedTo
+  field only
+- changed the data in inst/extdata/Beer to use a part of Beer data with 1000 transcripts, 
+  30 patients in order to further decrease the memory use
+
+
+ISOpureR 1.0.7 2014-12-18
+==========================
+
+Minor update
+-------------
+- edited the .cpp file to use RcppEigen::Map which means the matrix is not copied, but
+  accessed from the same memory location
+
+
+ISOpureR 1.0.6 2014-12-16
+==========================
+
+Major update
+-------------
+- used RcppEigen to create a C++ function wrapped into R that finds the maximum over columns,
+  which improves run time 2-3 fold on the Beer dataset (both full and subset in package)
+- the package now depends on Rcpp and RcppEigen
+
+
+ISOpureR 1.0.5 2014-11-20
+==========================
+
+Minor update
+-------------
+- added NEWS file
+
+bug fixes
+---------
+- DESCRIPTION FILE - updated date, was incorrect in previous version
+- changed the tests in inst/tests to use the updated data with 2500 transcripts, 43 patients
+- these tests are not really accessible to users, but are used to test the code in the vignette
+  without having to run code in the vignette when loading (as it takes too long)
+
+
+ISOpureR 1.0.4 2014-11-16
+==========================
+
+Minor update
+-------------
+- changed the data in inst/extdata/Beer to use a part of Beer data with 2500 transcripts, 
+  43 patients and ISOpureS2model was also rounded, in order to comply with CRAN memory 
+  requirements

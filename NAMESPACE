@@ -1,3 +1,5 @@
+useDynLib(ISOpureR)
+importFrom(Rcpp, evalCpp)
 export(
 	'ISOpure.model_optimize.cg_code.rminimize',
 	'ISOpureS1.model_core.compute_loglikelihood',

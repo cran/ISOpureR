@@ -53,7 +53,7 @@ Since patients do not necessarily have a matched tumour-normal sample, and the n
 
 \section{Applying ISOpureR to an example}
 
-We will show how to use \emph{ISOpureR} with a small part of the lung adenocarcinoma expression data from Beer et al. \cite{Beer}, which is included with the package. Although the full dataset contains measured expression levels of 5151 transcripts in 86 patients, only data from 2500 transcripts and 43 patients is included with \emph{ISOpureR} to reduce the file size. The dataset also contains 10 reference healthy samples. 
+We will show how to use \emph{ISOpureR} with a small part of the lung adenocarcinoma expression data from Beer et al. \cite{Beer}, which is included with the package. Although the full dataset contains measured expression levels of 5151 transcripts in 86 patients, only data from 1000 transcripts and 30 patients is included with \emph{ISOpureR} to reduce the file size. The dataset also contains 10 reference healthy samples. 
 
 \subsection{Load and format data}
 
@@ -64,8 +64,8 @@ The first step is to load the data and make sure that both the tumour data and t
 # Data is not the full Beer dataset due to memory constraints
 library(ISOpureR);
 path.to.data <- paste0(file.path(system.file(package = "ISOpureR"), 'extdata', 'Beer'));  
-load(file.path(path.to.data , 'beer.normaldata.2500.transcripts.RData'))
-load(file.path(path.to.data , 'beer.tumordata.2500.transcripts.43.patients.RData'))
+load(file.path(path.to.data , 'beer.normaldata.1000.transcripts.RData'))
+load(file.path(path.to.data , 'beer.tumordata.1000.transcripts.30.patients.RData'))
 
 # Check what the data looks like
 # The tumordata is rather large, so just look at the normal data for this example
@@ -91,33 +91,33 @@ set.seed(123);
 ISOpureS1model <- ISOpureS1.model_core.learnmodel(beer.tumordata, beer.normaldata);
 @ 
 
-The first step runs a long time (\emph{i.e.} about an hour; for the full Beer dataset it takes a few hours).  The output to the screen will look something like this:
+The run time for both steps is about 20-30 minutes for the small dataset (but can take a several days for large datasets).  The output to the screen will look something like this:
 
 <<output-step-1, eval=FALSE>>=
 # [1] "---------------------"
 # [1] "Initializing..."
-# [1] "MIN_KAPPA set to  24446.9895636363"
+# [1] "MIN_KAPPA set to  9571.36859512808"
 # [1] "--- optimizing mm..."
 # [1] "--- optimizing theta..."
 # [1] "--- optimizing vv..."
 # [1] "--- optimizing kappa..."
 # [1] "--- optimizing omega..."
-# [1] "Total log likelihood: -868015829.449002"
-# [1] "iter:  1 / 35 , loglikelihood:  -868015829.449002 , change:  Inf"
+# [1] "Total log likelihood: -213825284.681581"
+# [1] "iter:  1 / 35 , loglikelihood:  -213825284.681581 , change:  Inf"
 # [1] "--- optimizing mm..."
 # [1] "--- optimizing theta..."
 # [1] "--- optimizing vv..."
 # [1] "--- optimizing kappa..."
 # [1] "--- optimizing omega..."
-# [1] "Total log likelihood: -867925503.209553"
-# [1] "iter:  2 / 35 , loglikelihood:  -867925503.209553 , change:  0.000104071419856478"
+# [1] "Total log likelihood: -213802936.615107"
+# [1] "iter:  2 / 35 , loglikelihood:  -213802936.615107 , change:  0.000104526471096462"
 # [1] "--- optimizing mm..."
 # [1] "--- optimizing theta..."
 # [1] "--- optimizing vv..."
 # [1] "--- optimizing kappa..."
 # [1] "--- optimizing omega..."
-# [1] "Total log likelihood: -867906153.934941"
-# [1] "iter:  3 / 35 , loglikelihood:  -867906153.934941 , change:  2.22942014227049e-05"
+# [1] "Total log likelihood: -213796857.989424"
+# [1] "iter:  3 / 35 , loglikelihood:  -213796857.989424 , change:  2.84317821142625e-05"
 @
 
 The optimization of the loglikelihood will run for at least 35 iterations, and if the change in loglikelihood is greater than $10^{-7}$, up to 100 iterations.  At the end of this process  you may see warnings as below.
@@ -136,7 +136,7 @@ The list \texttt{ISOpureS1model} which is returned will contain all the informat
 
 <<ISOpureS1model-structure>>=
 # Load the saved ISOpureS1model for this example, if time is an issue
-load(file.path(path.to.data , 'beer.ISOpureS1model.2500.transcripts.43.patients.RData'))
+load(file.path(path.to.data , 'beer.ISOpureS1model.1000.transcripts.30.patients.RData'))
 ls()
 
 # Check that what ISOpureS1model looks like
@@ -167,19 +167,19 @@ The screen output will look very similar to the output in Step 1.
 <<output-step-2, eval=FALSE>>=
 # [1] "---------------------"
 # [1] "Initializing..."
-# [1] "MIN_KAPPA set to  2106511.36827368"
+# [1] "MIN_KAPPA set to  656845.310086419"
 # [1] "--- optimizing cc..."
 # [1] "--- optimizing theta..."
 # [1] "--- optimizing vv..."
 # [1] "--- optimizing kappa..."
-# [1] "Total log likelihood: -866065642.895818"
-# [1] "iter:  1 / 35 , loglikelihood:  -866065642.895818 , change:  Inf"
+# [1] "Total log likelihood: -213311302.191639"
+# [1] "iter:  1 / 35 , loglikelihood:  -213311302.191639 , change:  Inf"
 # [1] "--- optimizing cc..."
 # [1] "--- optimizing theta..."
 # [1] "--- optimizing vv..."
 # [1] "--- optimizing kappa..."
-# [1] "Total log likelihood: -864323005.847771"
-# [1] "iter:  2 / 35 , loglikelihood:  -864323005.847771 , change:  0.00201618727750749"
+# [1] "Total log likelihood: -212874664.066665"
+# [1] "iter:  2 / 35 , loglikelihood:  -212874664.066665 , change:  0.00205115121091618"
 @ 
 
 Again, \texttt{ISOpureS2model} which is returned by the function \texttt{ISOpureS2.model\_core.learnmodel} will contain all the information on parameters estimated in Step 2.  The matrix \texttt{ISOpureS2model\$cc\_cancerprofiles} will contain the patient-specific cancer profiles and is of the same dimension as the \texttt{tumordata}.  It is also of the same scale, (\emph{i.e.} although ISOpureS2 treats purified cancer profiles as parameters of a multinomial distribution, we re-scale them to be on the same scale as the input tumour profiles).  The $n$-th column corresponds to the profile for the $n$-th patient.
@@ -190,7 +190,7 @@ Again, \texttt{ISOpureS2model} which is returned by the function \texttt{ISOpure
 # (due to memory constraints)
 load(file.path(
 		path.to.data,
-		'beer.ISOpureS2model.2500.transcripts.43.patients.rounded.RData'
+		'beer.ISOpureS2model.1000.transcripts.30.patients.RData'
 		)
 	)
 

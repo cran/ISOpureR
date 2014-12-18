@@ -52,17 +52,19 @@ ISOpure.util.logsum <- function(xx, dimen){
  
 	# note command application of max along row/columns is *opposite* of the command in Matlab, ie.
 	# max(A,[],2) in Matlab corresponds to apply(A,1,max) in R
-	otherdim <- -dimen+3; # ugly coding, sorry
+	# but since using Rcpp will use Matlab format, ie.
+	# if dimen=1, find the  max of each column, if dimen=2 find max of each row
 	
 	# M is a matrix of the maximum entries of xx or abs(xx) along each row or column
 	# Ex: if dimen = 1, then M is the max of each column 
 	#     and M = [xx_Max_c1, xx_Max_col2, ..., xx_Max_col_G]
+	# need M to be a row matrix
 	if (is.complex(xx)) {
 		yy <- abs(xx);
-		M <- t(as.matrix(apply(yy,otherdim,max)));
+		M <- rcppeigen_max_over_columns_or_rows(yy, dimen); 
 	}
 	else {
-		M <- t(as.matrix(apply(xx,otherdim,max)));
+		M <- rcppeigen_max_over_columns_or_rows(xx, dimen); 
 	}
 
 	# alpha is a modification of M

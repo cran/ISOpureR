@@ -13,8 +13,8 @@ library(ISOpureR);
 
 # load the data from that path
 data.path <-  paste0(file.path(system.file(package = "ISOpureR"), 'extdata', 'Beer'));  
-load(file.path(data.path , 'beer.tumordata.2500.transcripts.43.patients.RData'));
-load(file.path(data.path, 'beer.ISOpureS2model.2500.transcripts.43.patients.rounded.RData'));
+load(file.path(data.path , 'beer.tumordata.1000.transcripts.30.patients.RData'));
+load(file.path(data.path, 'beer.ISOpureS2model.1000.transcripts.30.patients.RData'));
 
 # the normaldata and tumourdata should be matrices
 beer.tumordata <- as.matrix(beer.tumordata);
