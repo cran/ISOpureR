@@ -33,20 +33,22 @@ ISOpureS2.model_core.optmodel <- function(tumordata, model, NUM_ITERATIONS=35) {
 	NUM_GRID_SEARCH_ITERATIONS <- 0;
 	iter <- 1;
 
+	flog.info("Running ISOpure step 2: PPE - Patient Profile Estimation Step")
+
 	# run for at least 35 iterations
 	# if the change in loglikelihood is greater than 1e-7 iterate up to 100 times  
-	while (iter < NUM_ITERATIONS || (change_ll_frac > 0.0000001 && iter < 100)) {
+	while (iter <= NUM_ITERATIONS || (change_ll_frac > 0.0000001 && iter < 100)) {
 	
-		print('--- optimizing cc...');
+		flog.info('--- optimizing cc...');
 		model <- ISOpureS2.model_optimize.opt_cc(tumordata, model, NUM_ITERATIONS_RMINIMIZE, iter, NUM_GRID_SEARCH_ITERATIONS); 
 
-		print('--- optimizing theta...');
+		flog.info('--- optimizing theta...');
 		model <- ISOpureS2.model_optimize.opt_theta(tumordata, model, NUM_ITERATIONS_RMINIMIZE, iter, NUM_GRID_SEARCH_ITERATIONS);
 
-		print('--- optimizing vv...');
+		flog.info('--- optimizing vv...');
 		model <- ISOpureS2.model_optimize.opt_vv(tumordata, model, NUM_ITERATIONS_RMINIMIZE, iter, NUM_GRID_SEARCH_ITERATIONS);
 
-		print('--- optimizing kappa...');
+		flog.info('--- optimizing kappa...');
 		model <- ISOpureS2.model_optimize.opt_kappa(tumordata, model, NUM_ITERATIONS_RMINIMIZE, iter, NUM_GRID_SEARCH_ITERATIONS);
 
 		# # the code to optimize omega is here (for future extension), but not
@@ -59,12 +61,17 @@ ISOpureS2.model_core.optmodel <- function(tumordata, model, NUM_ITERATIONS=35) {
 		change_ll <- model$total_loglikelihood-total_loglikelihood_old;
 		change_ll_frac <- abs(change_ll/model$total_loglikelihood);
 	
-		print(paste('Total log likelihood:', model$total_loglikelihood));	
-		print(paste('iter: ',iter, '/', NUM_ITERATIONS, ', loglikelihood: ', model$total_loglikelihood, ', change: ', change_ll_frac));
+		flog.info('Total log likelihood: %s', model$total_loglikelihood);	
+		flog.info('iter: %s/%s, loglikelihood: %s,',  iter, NUM_ITERATIONS, model$total_loglikelihood); 
+		flog.info('       change: %s', change_ll_frac);
 		
 		iter <- iter+1;
 		total_loglikelihood_old <- model$total_loglikelihood;
 	}
-	
+
+	if (max(abs(model$vv-1)) < 1e-8){
+		flog.warn('The values of vv parameter all all near 1')
+	}
+
 	return(model)
 }

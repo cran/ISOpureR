@@ -47,7 +47,7 @@ ISOpureS2.model_optimize.theta.theta_loglikelihood <- function(ww, tumordata, dd
 	log_all_rates <- rbind(model$log_BBtranspose, model$log_cc[dd,]);
 
 	# loglikelihood of observed tumour profile t_dd
-	# log p(t_d | B, theta_d c_d) = log Multinomial(t_n| alpha*c_d + theta_d*B)
+	# log p(t_d | B, theta_d, c_d) = log Multinomial(t_n| alpha*c_d + theta_d*B)
 
 	log_P_t_given_theta <- ISOpure.util.logsum(t(ISOpure.util.repmat(ISOpure.util.matlab_log(alltheta),G, 1)) + log_all_rates,1);
 

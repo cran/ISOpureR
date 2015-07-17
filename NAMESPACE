@@ -1,9 +1,11 @@
 useDynLib(ISOpureR)
+import(futile.logger)
 importFrom(Rcpp, evalCpp)
+importFrom(stats, runif)
 export(
 	'ISOpure.model_optimize.cg_code.rminimize',
 	'ISOpureS1.model_core.compute_loglikelihood',
-	'ISOpureS1.model_core.learnmodel',
+	'ISOpure.step1.CPE',
 	'ISOpureS1.model_core.new_model',
 	'ISOpureS1.model_core.optmodel',
 	'ISOpureS1.model_optimize.kappa.kappa_compute_loglikelihood',
@@ -25,7 +27,7 @@ export(
 	'ISOpure.model_optimize.vv.vv_deriv_loglikelihood',
 	'ISOpure.model_optimize.vv.vv_loglikelihood',
 	'ISOpureS2.model_core.compute_loglikelihood',
-	'ISOpureS2.model_core.learnmodel',
+	'ISOpure.step2.PPE',
 	'ISOpureS2.model_core.new_model',
 	'ISOpureS2.model_core.optmodel',
 	'ISOpureS2.model_optimize.cc.cc_deriv_loglikelihood',

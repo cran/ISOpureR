@@ -23,7 +23,7 @@
 #
 # Description:  This function optimizes kappa, the strength parameter in the prior over the reference
 # cancer profile.  Note that we don't directly optimize kappa because it has constraints (must be 
-# greater than the minimum determined in ISOpureS1.model_core.learnmodel.)
+# greater than the minimum determined in ISOpure.step1.CPE.)
 #
 # REVISIT: 
 # 1. This function is not vectorized, as FOR STEP 1 in Matlab, as kappa is a scalar.

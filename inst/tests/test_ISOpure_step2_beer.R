@@ -14,4 +14,5 @@ beer.tumordata <- as.matrix(beer.tumordata);
 beer.normaldata <- as.matrix(beer.normaldata);
 
 # run step 2 of ISOpureR
-ISOpureS2model <- ISOpureS2.model_core.learnmodel(beer.tumordata, beer.normaldata, ISOpureS1model);
+set.seed(456);
+ISOpureS2model <- ISOpure.step2.PPE(beer.tumordata, beer.normaldata, ISOpureS1model);

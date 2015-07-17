@@ -3,7 +3,7 @@
 \title{Optimize kappa in step 2}
 \description{This function optimizes kappa, the strength parameter in the prior over the reference
 	cancer profile.  Note that we don't directly optimize kappa because it has constraints (must be 
-	greater than the minimum determined in ISOpureS2.model_core.learnmodel.)}
+	greater than the minimum determined in ISOpure.step2.PPE.)}
 \usage{
 ISOpureS2.model_optimize.opt_kappa(
 	tumordata, 

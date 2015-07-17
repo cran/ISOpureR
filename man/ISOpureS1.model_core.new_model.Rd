@@ -12,7 +12,7 @@ ISOpureS1.model_core.new_model(tumordata, kappa, INITIAL_VV, PPtranspose, BBtran
 	\item{INITIAL_VV}{a vector with K components, the prior over mixing proportions, theta, with 
 		last entry weighed more heavily }
 	\item{PPtranspose}{a (K-1)xG matrix, standardized so that all entries sum to 1, see 
-		ISOpureS1.model_core.learnmodel.R}
+		ISOpure.step1.CPE.R}
 	\item{BBtranspose}{a (K-1)xG matrix of the standardized normal profiles, so that they sum to 1}
 }
 \value{

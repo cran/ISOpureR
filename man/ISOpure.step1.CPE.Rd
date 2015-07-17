@@ -1,10 +1,10 @@
-\name{ISOpureS1.model_core.learnmodel}
-\alias{ISOpureS1.model_core.learnmodel}
+\name{ISOpure.step1.CPE}
+\alias{ISOpure.step1.CPE}
 \title{Perform first step of ISOpure purification algorithm}
 \description{Performs the first step of the ISOpure purification algorithm, taking tumor data 
 	normal profiles and returning the a list, ISOpureS1model, with all the updated parameters.}
 \usage{
-ISOpureS1.model_core.learnmodel(tumordata, BB, PP, MIN_KAPPA) 
+ISOpure.step1.CPE(tumordata, BB, PP, MIN_KAPPA, logging.level) 
 }
 \arguments{
 	% Right now there is not full backwards compatibility with ISOLATE
@@ -35,6 +35,13 @@ ISOpureS1.model_core.learnmodel(tumordata, BB, PP, MIN_KAPPA)
 		the tumor samples having low \% cancer content estimates).  If this is the case, you can try 
 		setting MIN_KAPPA=1, or some other small value.  For reference, for the data presented in 
 		Quon et al., 2013, MIN_KAPPA is on the order of 10^5.}
+
+	\item{logging.level}{(optional) A string that gives the logging threshold for futile.logger. The
+		possible options are 'TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'. Currently the 
+		messages in ISOpureR are only in the categories 'INFO', 'WARN', and 'FATAL', and the default 
+		setting is 'INFO'.  Setting a setting for the entire package will over-ride the setting for
+		a particular function.}
+		
 }
 \references{
   G Quon, S Haider, AG Deshwar, A Cui, PC Boutros, QD Morris. \emph{Computational purification of 

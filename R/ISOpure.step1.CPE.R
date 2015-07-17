@@ -9,12 +9,12 @@
 # If publications result from research using this SOFTWARE, we ask that the Ontario Institute for Cancer Research be acknowledged and/or
 # credit be given to OICR scientists, as scientifically appropriate.
 
-### FUNCTION: ISOpureS1.model_core.learnmodel.R ########################################################################
+### FUNCTION: ISOpure.step1.CPE.R ########################################################################
 #
 # This function performs the first step of the ISOpure purification algorithm, taking tumor data 
 # normal profiles and returning the a list, ISOpureS1model, with all the updated parameters.
 # 
-# Function call: ISOpureS1.model_core.learnmodel <- function(tumordata, BB, PP, MIN_KAPPA) 
+# Function call: ISOpure.step1.CPE <- function(tumordata, BB, PP, MIN_KAPPA) 
 
 ### INPUT #########################################################################################
 #  tumordata: a GxD matrix representing gene expression profiles of
@@ -91,7 +91,9 @@
 #      loglikelihood 
 #    - MIN_KAPPA as described above
 
-ISOpureS1.model_core.learnmodel <- function(tumordata, BB, PP=NULL, MIN_KAPPA=NULL) { 
+ISOpure.step1.CPE <- function(tumordata, BB, PP=NULL, MIN_KAPPA=NULL, logging.level="INFO") { 
+
+	flog.threshold(logging.level);
 
 	# by default, we are looking at primary tumors from the same site, so the
 	# "Source Panel" (profiles that form the components of the prior over the reference 
@@ -104,9 +106,33 @@ ISOpureS1.model_core.learnmodel <- function(tumordata, BB, PP=NULL, MIN_KAPPA=NU
 		PP <- BB;
 	}
 
+	# Tumordata --------------------------------------------------------------#
+
+	# make sure tumordata is a proper intensity/read count matrix (no negative elements)
+	if (min(min(tumordata))<0) {
+		flog.fatal('Negative elements found in input matrix tumordata');
+		stop('Negative elements found in input matrix tumordata');
+	}
+
+	# make sure minimum value is not 0 (i.e. all genes need to have some probability of being observed in a sample)
+	if (min(min(tumordata))==0) { 
+		nzix <- which(tumordata>0);
+		mymin <- min(tumordata[nzix]);
+		tumordata[which(tumordata==0)] <- mymin;
+		flog.warn('Minimum element in input matrix tumordata is 0 -- setting all zeros to smallest non-zero element, %s', mymin); 
+	}
+
+	# make sure data is not log transformed
+	if (max(max(tumordata)) < 30) {
+		flog.warn('Maximum element in matrix tumordata is less than 30 -- make sure data is in normal (not log) space, otherwise output is wrong.');
+	}
+
+	# BB (Normaldata) --------------------------------------------------------#
+
 	# make sure BB is a proper intensity/read count matrix (no negative elements)
 	if (min(min(BB))<0) {
-		stop('negative elements found in input matrix BB');
+		flog.fatal('Negative elements found in input matrix BB');
+		stop('Negative elements found in input matrix BB');
 	}
 
 	# make sure minimum value is not 0 (i.e. all genes need to have some probability of being observed in a sample)
@@ -114,17 +140,20 @@ ISOpureS1.model_core.learnmodel <- function(tumordata, BB, PP=NULL, MIN_KAPPA=NU
 		nzix <- which(BB>0);
 		mymin <- min(BB[nzix]);
 		BB[which(BB==0)] <- mymin;
-		warning(paste('minimum element in input matrix BB is 0 -- setting all zeros to smallest non-zero element' , mymin)); 
+		flog.warn('Minimum element in input matrix BB is 0 -- setting all zeros to smallest non-zero element, %s', mymin); 
 	}
 
 	# make sure data is not log transformed
 	if (max(max(BB)) < 30) {
-		warning('maximum element in matrix BB is less than 30 -- make sure data is in normal (not log) space, otherwise output is wrong.');
+		flog.warn('Maximum element in matrix BB is less than 30 -- make sure data is in normal (not log) space, otherwise output is wrong.');
 	}
+
+	# PP (Normaldata) --------------------------------------------------------#
 
 	# do same checks for the PP matrix
 	if (min(min(PP))<0) {
-		stop('negative elements found in input matrix PP');
+		flog.fatal('Negative elements found in input matrix PP');
+		stop('Negative elements found in input matrix PP');
 	}
 
 	# make sure minimum value is not 0 (i.e. all genes need to have some probability of being observed in a sample)
@@ -132,21 +161,21 @@ ISOpureS1.model_core.learnmodel <- function(tumordata, BB, PP=NULL, MIN_KAPPA=NU
 		nzix<-which(PP>0);
 		mymin<-min(PP[nzix]);
 		PP[which(PP==0)]<-mymin;
-		warning(paste('minimum element in input matrix PP is 0 -- setting all zeros to smallest non-zero element ', mymin));
+		flog.warn('Minimum element in input matrix PP is 0 -- setting all zeros to smallest non-zero element, %s', mymin);
 	}
 
 	# make sure data is not log transformed
 	if (max(max(PP)) < 30) {
-		warning('maximum element in matrix PP is less than 30 -- make sure data is in normal (not log) space, otherwise output is wrong.');
+		flog.warn('Maximum element in matrix PP is less than 30 -- make sure data is in normal (not log) space, otherwise output is wrong.');
 	}
 
 	# we work with these BB and PP in their transpose
-	BBtranspose<-t(BB);
-	PPtranspose<-t(PP);
+	BBtranspose <- t(BB);
+	PPtranspose <- t(PP);
 
 	# NTOPICS is the total number of component profiles (# normals + 1 for the
 	# reference cancer profile)
-	NTOPICS<-dim(BBtranspose)[1]+1;
+	NTOPICS <- dim(BBtranspose)[1]+1;
 
 	#initial value of kappa of 10^4 seems to work well.  This is optimized later.
 	kappa <- 10^4;
@@ -163,8 +192,7 @@ ISOpureS1.model_core.learnmodel <- function(tumordata, BB, PP=NULL, MIN_KAPPA=NU
 
 	total_loglikelihood <- -Inf;
 
-	print('---------------------');
-	print('Initializing...');
+	flog.info('Initializing model...');
 
 	# MIN_KAPPA represents the minimum value of kappa that we enforce during
 	# optimization, so that the Dirichlet distribution gives real valued
@@ -174,7 +202,7 @@ ISOpureS1.model_core.learnmodel <- function(tumordata, BB, PP=NULL, MIN_KAPPA=NU
 	if (is.null(MIN_KAPPA)){
 		MIN_KAPPA <- 1/min(min(PPtranspose));
 	}
-	print(paste('MIN_KAPPA set to ', as.character(MIN_KAPPA)));
+	flog.info('MIN_KAPPA set to %s', MIN_KAPPA);
 
 	# initialize the model structure that holds the parameters 
 	INIT_MODEL <- ISOpureS1.model_core.new_model(tumordata, max(kappa, 10*MIN_KAPPA), INITIAL_VV, PPtranspose, BBtranspose);
