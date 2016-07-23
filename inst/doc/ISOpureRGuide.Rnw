@@ -2,6 +2,7 @@
 %\VignetteIndexEntry{Guide for using ISOpureR}
 
 \documentclass{article}
+\usepackage{graphicx}
 \usepackage[sc]{mathpazo}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}

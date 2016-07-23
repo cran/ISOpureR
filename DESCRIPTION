@@ -1,11 +1,11 @@
 Package: ISOpureR
-Version: 1.0.18
-Date: 2015-07-17
+Version: 1.0.20
+Date: 2016-07-14
 Title: Deconvolution of Tumour Profiles
 Authors@R: c(person("Gerald Quon", role = "aut",
 		     	email = "gquon@mit.edu"),
 		person("Catalina V Anghel", role = c("aut", "trl"),
-			email="Catalina Anghel@oicr.on.ca"),
+			email="catalina.anghel@alum.utoronto.ca"),
 		person("Syed Haider", role = "aut",
 			email="Syed.Haider@oicr.on.ca"),	
 		person("Francis Nguyen", role = "aut"),
@@ -27,6 +27,6 @@ Description: Deconvolution of mixed tumour profiles into normal and cancer for e
 	mixed tumour profiles and a set of unmatched "basis" normal profiles.
 License: GPL-2
 NeedsCompilation: yes
-Packaged: 2015-07-23 20:59:24 UTC; canghel
+Packaged: 2016-07-21 13:19:02 UTC; blabuser
 Repository: CRAN
-Date/Publication: 2015-07-24 07:53:42
+Date/Publication: 2016-07-23 08:32:25
