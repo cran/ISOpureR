@@ -1,6 +1,6 @@
-2298eee3b3dac167851fb4774e56fea7 *DESCRIPTION
+f4c9eb240c98a1a531225118e154ae33 *DESCRIPTION
 b5dad54b127adcb9aa5c121706881742 *NAMESPACE
-a4989b5bfb6a64079e2ea53c862095c5 *NEWS
+32c5a6902c6d1c7de577cd822e25ec6e *NEWS
 936ee704d7e52a6d9223111b639d7cbb *R/ISOpure.model_optimize.cg_code.rminimize.R
 79e074c017f05cd36f5b1b1b55c4675b *R/ISOpure.model_optimize.vv.vv_deriv_loglikelihood.R
 950161c7a8bddba0f0bd11fbad622688 *R/ISOpure.model_optimize.vv.vv_loglikelihood.R
@@ -47,8 +47,8 @@ b1817fd2a972afa6e762a2c0a31ce007 *R/ISOpureS2.model_optimize.theta.theta_deriv_l
 5dd8cd6e292e7b58571d60e632f48eb6 *R/ISOpureS2.model_optimize.vv.vv_compute_loglikelihood.R
 a386022ca801d56bf9e364f470352435 *R/RcppExports.R
 38a94215d8277140cc3f100b37972a9e *build/vignette.rds
-66f2092bc5b442942f7845411fbd910a *inst/doc/ISOpureRGuide.Rnw
-75fba5e32b34799f3d9dd1873ce66f30 *inst/doc/ISOpureRGuide.pdf
+83b00b965d7339dfca5a93ba27a7f512 *inst/doc/ISOpureRGuide.Rnw
+1e4aeba56607a6a07eb454a9def6a49b *inst/doc/ISOpureRGuide.pdf
 55375c883c1bc55848f3a9c9ee7004e1 *inst/extdata/Beer/alphapurities_full_dataset.txt
 1737ac8de4cf71c2fd6f07fca57d62f0 *inst/extdata/Beer/beer.ISOpureS1model.1000.transcripts.30.patients.RData
 a82942e5af7750bdfee925b0fe3ef771 *inst/extdata/Beer/beer.ISOpureS2model.1000.transcripts.30.patients.rounded.RData
@@ -113,4 +113,4 @@ b7c31a1ec953af26b2d9bd57b429dc62 *vignettes/Figures/cancer-normal-comparison-hea
 a9937af7bfef38e76b174f7076fa424a *vignettes/Figures/isopure.jpg
 6af5cc7f4cbc933af2f19f4693239c56 *vignettes/Figures/network-model.jpg
 a332ee307d6aab27d4af06a4a7bab74e *vignettes/Figures/tumor-normal-comparison-heatmap.png
-66f2092bc5b442942f7845411fbd910a *vignettes/ISOpureRGuide.Rnw
+83b00b965d7339dfca5a93ba27a7f512 *vignettes/ISOpureRGuide.Rnw

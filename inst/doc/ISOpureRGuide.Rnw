@@ -23,6 +23,22 @@ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
 pdfstartview={XYZ null null 1}}
 
 \begin{document}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
 <<setup, include=FALSE, cache=FALSE>>=
 library(knitr)
 # set global chunk options
@@ -108,7 +124,7 @@ The two-step method is described in the next section.
 
 \begin{figure}[!h]	
 	\centering
-		\includegraphics[width = 0.35\textwidth, natwidth=232,natheight=363]{Figures/network-model.jpg}
+		\includegraphics[width = 0.35\textwidth]{Figures/network-model.jpg}
       \caption{{\bf{Bayesian network model of ISOpure.}} The graph represents the relationships between the variables in the ISOpure model, where the conditional probability of a given variable is only dependent on its parents in the graphs.  The shaded circles, $\boldsymbol{x}_n$ and $\boldsymbol{b}_r$, represent the observed variables. The estimated model parameters (unshaded circles) are conditioned on the estimated model hyperparameters (also unshaded).  The $N$ and $R$ in the corners of the plates (rectangles) indicate that the variables inside are repeated $N$ and $R$ times, once for each patient and healthy profile, respectively. \cite{Quon-ISOpure}}
       \label{fig:bayesian-network}
 \end{figure}
@@ -135,7 +151,7 @@ In the second {\emph{Patient Profile Estimation (PPE)}} step, Figure \ref{fig:PP
 
 \begin{figure}[!h]
 	\centering
-		\includegraphics[width = 0.8\textwidth, natwidth=600,natheight=454]{Figures/isopure.jpg}
+		\includegraphics[width = 0.8\textwidth]{Figures/isopure.jpg}
 		\caption{{\bf{ISOpure algorithm.}} {\bf{(A)}} The inputs to the algorithm are the tumor profiles of the patients $\left\{\mathbf{t}_n \right\}_1^N$ and healthy tissue profiles $\left\{\mathbf{b}_r \right\}_1^R$, where the $R < N$. {\bf{(B)}} The {\emph{Cancer Profile Estimation (CPE)}} step of ISOpure estimates the average cancer profile $\mathbf{m}$, as well as the cancer fraction for each patient, $\alpha_n$. {\bf{(C)}} The {\emph{Patient Profile Estimation (PPE)}} step estimates the personalized cancer profile $\mathbf{c}_n$ for each patient.  The values of $\alpha_n$ and $\mathbf{m}$ remain fixed in this step.  The healthy profiles, determined by the estimation of the coefficients $\theta_{n,r}$ are estimated in the CPE step, but are re-estimated in the the PPE step. \cite{Quon-ISOpure}} 
 		\label{fig:isopure}
 \end{figure}
@@ -827,7 +843,7 @@ heatmap(
 
 \begin{figure}[!h]
 	\centering
-		\includegraphics[width = 0.7\textwidth, natwidth=600,natheight=454]{Figures/tumor-normal-comparison-heatmap.png}
+		\includegraphics[width = 0.7\textwidth]{Figures/tumor-normal-comparison-heatmap.png}
 		\caption{A heatmap comparing differential expression between tumour samples (red columns) and normal samples (blue columns).  Only 85 transcript levels are differentially expressed between cancer and normal, Holm-adjusted p-value of 0.05.} 
 		\label{fig:tumor-normal}
 \end{figure}
@@ -868,7 +884,7 @@ heatmap(
 
 \begin{figure}[!h]
 	\centering
-		\includegraphics[width = 0.7\textwidth, natwidth=600,natheight=454]{Figures/cancer-normal-comparison-heatmap.png}
+		\includegraphics[width = 0.7\textwidth]{Figures/cancer-normal-comparison-heatmap.png}
 		\caption{A heatmap comparing differential expression between cancer samples purified using \emph{ISOpureR} (red columns) and normal samples (blue columns).  In this case, 496 transcript levels are differentially expressed between cancer and normal, Holm-adjusted p-value of 0.01.}
 		\label{fig:tumor-normal}
 \end{figure}
