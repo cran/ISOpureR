@@ -1,4 +1,4 @@
-useDynLib(ISOpureR)
+useDynLib(ISOpureR, .registration = TRUE)
 import(futile.logger)
 importFrom(Rcpp, evalCpp)
 importFrom(stats, runif)
@@ -46,5 +46,6 @@ export(
 	'ISOpure.util.matlab_greater_than',
 	'ISOpure.util.matlab_less_than',
 	'ISOpure.util.matlab_log',
-	'ISOpure.util.repmat'
+	'ISOpure.util.repmat',
+	'ISOpure.calculate.tac'
 	);

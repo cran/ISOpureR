@@ -39,7 +39,7 @@ ISOpureS2.model_optimize.opt_theta <- function(tumordata, model, NUM_ITERATIONS_
 	# theta), so we are only storing/updating the remaining columns of theta,
 	# and optimizing them to sum to 1-alpha_i for tumor i
 	if (!any(names(model)=='theta_weights')) {
-		model$theta_weights <- log(model$theta[ ,1:(K-1)]);
+		model$theta_weights <- log(model$theta[ ,1:(K-1), drop=F]);
 		}
 	
 	# update each theta_d separately

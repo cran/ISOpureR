@@ -473,8 +473,8 @@ The first step is to load the data and make sure that both the tumor data and th
 # Data is not the full Beer dataset due to memory constraints
 library(ISOpureR);
 path.to.data <- paste0(file.path(system.file(package = "ISOpureR"), 'extdata', 'Beer'));  
-load(file.path(path.to.data , 'beer.normaldata.1000.transcripts.RData'));
-load(file.path(path.to.data , 'beer.tumordata.1000.transcripts.30.patients.RData'));
+load(file.path(path.to.data , 'beer.normaldata.500.transcripts.RData'));
+load(file.path(path.to.data , 'beer.tumordata.500.transcripts.30.patients.RData'));
 
 # Check what the data looks like
 # The tumor data is rather large, so just look at the normal data for this example
@@ -557,7 +557,7 @@ The list \texttt{ISOpureS1model} which is returned will contain all the informat
 
 <<ISOpureS1model-structure>>=
 # Load the saved ISOpureS1model for this example, if time is an issue
-load(file.path(path.to.data , 'beer.ISOpureS1model.1000.transcripts.30.patients.RData'));
+load(file.path(path.to.data , 'beer.ISOpureS1model.500.transcripts.30.patients.RData'));
 ls();
 
 # Check that what ISOpureS1model looks like
@@ -661,7 +661,7 @@ Again, \texttt{ISOpureS2model} which is returned by the function \texttt{ISOpure
 # Note that the data has been rounded to 5 decimals (for CRAN memory requirements)
 load(file.path(
 		path.to.data,
-		'beer.ISOpureS2model.1000.transcripts.30.patients.rounded.RData'
+		'beer.ISOpureS2model.500.transcripts.30.patients.RData'
 		)
 	);
 
@@ -676,6 +676,15 @@ str(ISOpureS2model$cc_cancerprofiles);
 head(ISOpureS2model$cc_cancerprofiles[ ,3]);
 @
 
+\subsection{Run the Patient Profile Estimation}
+
+After cancer profile estimation is complete and patient-specific cancer mRNA expression profiles are determined, tumour adjacent cell mRNA expression can be determined by calling the following function:
+
+@
+tacdata <- ISOpure.calculate.tac(beer.tumordata,ISOpureS2model$cc_cancerprofiles,ISOpureS2model$alphapurities)
+@
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Visualize results from small example}
@@ -688,9 +697,9 @@ This section gives simple examples for visualizing the output from \emph{ISOpure
 library(ISOpureR);
 
 path.to.data <- paste0(file.path(system.file(package = "ISOpureR"), 'extdata', 'Beer'));
-load(file.path(path.to.data , 'beer.tumordata.1000.transcripts.30.patients.RData'));
-load(file.path(path.to.data , 'beer.normaldata.1000.transcripts.RData'));
-load(file.path(path.to.data , 'beer.ISOpureS2model.1000.transcripts.30.patients.rounded.RData'));
+load(file.path(path.to.data , 'beer.tumordata.500.transcripts.30.patients.RData'));
+load(file.path(path.to.data , 'beer.normaldata.500.transcripts.RData'));
+load(file.path(path.to.data , 'beer.ISOpureS2model.500.transcripts.30.patients.RData'));
 @ 
 
 \subsection{Proportion of cancer}
@@ -699,7 +708,7 @@ The first graph is a histogram of the cancer proportions in the patients' tumors
 
 <<"figuresetup", cache=FALSE, include=FALSE>>=
 require("knitr")
-opts_chunk$set(fig.path='Examples/', dev='png', warning=FALSE, dpi=120, fig.align='center')
+opts_chunk$set(fig.path='Examples/', dev='png', warning=FALSE, dpi=80, fig.align='center')
 @
 
 <<cellularity-histogram, include=TRUE, fig.height=4, fig.width=4>>=
