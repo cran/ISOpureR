@@ -1,6 +1,6 @@
-b118547e22398cef30e53cc8e043213f *DESCRIPTION
+3f2d5dd744396ed755382b1792552491 *DESCRIPTION
 b12af107b70b5149e159ed33ddbf5ec1 *NAMESPACE
-32c5a6902c6d1c7de577cd822e25ec6e *NEWS
+a86905b31cb93d4200f8d2c3dc4323d4 *NEWS
 66e02a9a4086cfb6f2a6d71d2345f344 *R/ISOpure.calculate.tac.R
 936ee704d7e52a6d9223111b639d7cbb *R/ISOpure.model_optimize.cg_code.rminimize.R
 79e074c017f05cd36f5b1b1b55c4675b *R/ISOpure.model_optimize.vv.vv_deriv_loglikelihood.R
@@ -43,13 +43,13 @@ a4728651a5333d7bf6b1bcec30d6db46 *R/ISOpureS2.model_optimize.opt_cc.R
 7d87010d03e624003ea5bcbbc475d113 *R/ISOpureS2.model_optimize.opt_kappa.R
 43b5c6a5df0aacb9872e530af705e756 *R/ISOpureS2.model_optimize.opt_theta.R
 4bf8191fa23f6ebd285a1189ac229eb1 *R/ISOpureS2.model_optimize.opt_vv.R
-b1817fd2a972afa6e762a2c0a31ce007 *R/ISOpureS2.model_optimize.theta.theta_deriv_loglikelihood.R
+df3af0ba9ffbda71b6daa6254665bcef *R/ISOpureS2.model_optimize.theta.theta_deriv_loglikelihood.R
 97afd0ad22266968d5dd354ffdf9d820 *R/ISOpureS2.model_optimize.theta.theta_loglikelihood.R
 5dd8cd6e292e7b58571d60e632f48eb6 *R/ISOpureS2.model_optimize.vv.vv_compute_loglikelihood.R
 1feff912fc7d6385ebde3aef2b4d9d46 *R/RcppExports.R
 16c929a08563633f868df32b38714e0a *build/vignette.rds
 52b4ec1c04f27ed6bb5a8257a4ec3c2d *inst/doc/ISOpureRGuide.Rnw
-cd77e496fabaf139b0330026e95c10fa *inst/doc/ISOpureRGuide.pdf
+634851f4f31a45ecd3eedb0dd98a1622 *inst/doc/ISOpureRGuide.pdf
 55375c883c1bc55848f3a9c9ee7004e1 *inst/extdata/Beer/alphapurities_full_dataset.txt
 ac62146f993d5a05e5afd0bc587f58e6 *inst/extdata/Beer/beer.ISOpureS1model.250.transcripts.30.patients.RData
 aa3d9d819687f77fedf99ba47d02b9eb *inst/extdata/Beer/beer.ISOpureS2model.250.transcripts.30.patients.RData

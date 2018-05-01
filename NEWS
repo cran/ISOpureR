@@ -1,3 +1,25 @@
+ISOpureR 1.1.2 2018-05-01
+==========================
+
+Minor update
+-------------
+- Fixing if() with conditions of length greater than one
+
+ISOpureR 1.1.1 2018-01-10
+==========================
+
+Minor update
+-------------
+- Shrunk down the test datafiles to save space, and fixed the Makevars to be compatible with Solaris
+
+ISOpureR 1.1.0 2017-11-14
+==========================
+
+Major update
+-------------
+- Added tac calculations
+- Fixing the bug noted by Francisco Avila Cobos which occurs when trying to run with only a single tumor
+
 ISOpureR 1.0.21 2016-08-22
 ==========================
 

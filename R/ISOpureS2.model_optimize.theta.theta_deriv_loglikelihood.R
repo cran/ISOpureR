@@ -73,7 +73,7 @@ ISOpureS2.model_optimize.theta.theta_deriv_loglikelihood <- function(ww, tumorda
 	# Rasmussen's conjugate gradient method minimizes, so we take the negative of the derivative
 	deriv_loglikelihood <- -deriv_loglikelihood;
 
-	if (is.finite(deriv_loglikelihood)==FALSE) {
+	if (all(is.finite(deriv_loglikelihood)==FALSE)) {
 		stop('something non-finite returned from ISOpure.model_optimize.cg_code.rminimize in the theta derivative');
 	}
 

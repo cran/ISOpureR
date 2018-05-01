@@ -1,6 +1,6 @@
 Package: ISOpureR
-Version: 1.1.1
-Date: 2018-01-10
+Version: 1.1.2
+Date: 2018-05-01
 Title: Deconvolution of Tumour Profiles
 Authors@R: c(person("Gerald Quon", role = "aut",
 		     	email = "gquon@mit.edu"),
@@ -14,8 +14,13 @@ Authors@R: c(person("Gerald Quon", role = "aut",
 		     	email = "Quaid.Morris@utoronto.ca"),
 		person("Paul C Boutros", role = c("aut", "cre"),
 		     	email = "Paul.Boutros@oicr.on.ca"))
-Author: Gerald Quon [aut], Catalina V Anghel [aut, trl], Syed Haider [aut], Francis Nguyen [aut], Amit G Deshwar [aut], Quaid D 
-	Morris [aut], Paul C Boutros [aut, cre]
+Author: Gerald Quon [aut],
+  Catalina V Anghel [aut, trl],
+  Syed Haider [aut],
+  Francis Nguyen [aut],
+  Amit G Deshwar [aut],
+  Quaid D Morris [aut],
+  Paul C Boutros [aut, cre]
 Maintainer: Paul C Boutros <Paul.Boutros@oicr.on.ca>
 Depends: R (>= 3.1.1)
 Imports: Rcpp (>= 0.11.3), stats, futile.logger
@@ -27,6 +32,6 @@ Description: Deconvolution of mixed tumour profiles into normal and cancer for e
 	mixed tumour profiles and a set of unmatched "basis" normal profiles.
 License: GPL-2
 NeedsCompilation: yes
-Packaged: 2018-01-10 19:55:19 UTC; clalansingh
+Packaged: 2018-05-01 15:45:09 UTC; clalansingh
 Repository: CRAN
-Date/Publication: 2018-01-10 20:53:31 UTC
+Date/Publication: 2018-05-01 20:21:42 UTC
