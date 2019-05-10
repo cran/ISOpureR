@@ -1,6 +1,6 @@
-3f2d5dd744396ed755382b1792552491 *DESCRIPTION
+fba90ec87d64191bb95872850a2a4bb4 *DESCRIPTION
 b12af107b70b5149e159ed33ddbf5ec1 *NAMESPACE
-a86905b31cb93d4200f8d2c3dc4323d4 *NEWS
+e1a93314e793956a06aac361454e45af *NEWS
 66e02a9a4086cfb6f2a6d71d2345f344 *R/ISOpure.calculate.tac.R
 936ee704d7e52a6d9223111b639d7cbb *R/ISOpure.model_optimize.cg_code.rminimize.R
 79e074c017f05cd36f5b1b1b55c4675b *R/ISOpure.model_optimize.vv.vv_deriv_loglikelihood.R
@@ -47,9 +47,9 @@ df3af0ba9ffbda71b6daa6254665bcef *R/ISOpureS2.model_optimize.theta.theta_deriv_l
 97afd0ad22266968d5dd354ffdf9d820 *R/ISOpureS2.model_optimize.theta.theta_loglikelihood.R
 5dd8cd6e292e7b58571d60e632f48eb6 *R/ISOpureS2.model_optimize.vv.vv_compute_loglikelihood.R
 1feff912fc7d6385ebde3aef2b4d9d46 *R/RcppExports.R
-16c929a08563633f868df32b38714e0a *build/vignette.rds
+d363d1e0ba7d0de6638827c147bc89a4 *build/vignette.rds
 52b4ec1c04f27ed6bb5a8257a4ec3c2d *inst/doc/ISOpureRGuide.Rnw
-634851f4f31a45ecd3eedb0dd98a1622 *inst/doc/ISOpureRGuide.pdf
+acd67ca0f35ea500005847204831e9cd *inst/doc/ISOpureRGuide.pdf
 55375c883c1bc55848f3a9c9ee7004e1 *inst/extdata/Beer/alphapurities_full_dataset.txt
 ac62146f993d5a05e5afd0bc587f58e6 *inst/extdata/Beer/beer.ISOpureS1model.250.transcripts.30.patients.RData
 aa3d9d819687f77fedf99ba47d02b9eb *inst/extdata/Beer/beer.ISOpureS2model.250.transcripts.30.patients.RData
@@ -103,7 +103,7 @@ eb621389eb9af3fd3dc41ca7c1595f8f *man/ISOpureS2.model_optimize.opt_cc.Rd
 1376a66dc5d0deaf797e9b816c123f3d *man/ISOpureS2.model_optimize.theta.theta_deriv_loglikelihood.Rd
 45618406174634a634dfc1f54f3cf857 *man/ISOpureS2.model_optimize.theta.theta_loglikelihood.Rd
 44e5ab39d414948d039309c67c825ec1 *man/ISOpureS2.model_optimize.vv.vv_compute_loglikelihood.Rd
-5e374655d7c9d846122cd540d29a82ac *src/Makevars
+afe4ae52ef0f4a5c84a445d806298609 *src/Makevars
 ae98a2265ecb070a40ad0a548dd2d758 *src/RcppExports.cpp
 91370afbd82e4a41c283c37f7d49e13e *src/packagename_init.c
 4e8421e1f5745f359bc2abaf315bf045 *src/rcppeigen_max_over_columns_or_rows.cpp
